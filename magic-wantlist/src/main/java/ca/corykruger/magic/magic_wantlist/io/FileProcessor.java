@@ -49,7 +49,9 @@ public class FileProcessor {
 		for (Set set : wantlist.getWantedCards()) {
 			content += "<li>" + set.getName() + "<ul>";
 			for (Card card : set.getCards()) {
-				content += "<li>" + card.toString() + "</li>";
+				if (card.isWanted()) {
+					content += "<li>" + card.toString() + "</li>";
+				}
 			}
 			content += "</ul></li>";
 		}

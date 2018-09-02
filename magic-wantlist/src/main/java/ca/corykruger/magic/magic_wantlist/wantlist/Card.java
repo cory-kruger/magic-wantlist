@@ -8,11 +8,13 @@ public class Card {
 	private String set;
 	private String name;
 	private String number;
+	private boolean wanted;
 	
-	public Card(String set, String name, String number) {
+	public Card(String set, String name, String number, boolean wanted) {
 		this.set = set;
 		this.name = name;
 		this.number = number;
+		this.wanted = wanted;
 	}
 	
 	@Override
@@ -44,7 +46,7 @@ public class Card {
 	
 	@Override
 	public String toString() {
-		return number + ":  " + name;
+		return (number != null ? number + ":  " : "") + name;
 	}
 	
 	public String getSet() {
@@ -69,6 +71,14 @@ public class Card {
 
 	public void setNumber(String number) {
 		this.number = number;
+	}
+	
+	public boolean isWanted() {
+		return wanted;
+	}
+	
+	public void setWanted(boolean wanted) {
+		this.wanted = wanted;
 	}
 
 }
