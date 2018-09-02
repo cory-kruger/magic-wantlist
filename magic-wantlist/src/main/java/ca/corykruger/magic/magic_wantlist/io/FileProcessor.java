@@ -12,8 +12,6 @@ import java.util.Locale;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.Gson;
-
 import ca.corykruger.magic.magic_wantlist.wantlist.Card;
 import ca.corykruger.magic.magic_wantlist.wantlist.Set;
 import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
@@ -38,14 +36,9 @@ public class FileProcessor {
 		return FileUtils.readFileToString(new File(LOCAL_DIR + file + ".json"));
 	}
 	
-	void save(String fileName, String content) throws IOException {
+	public void save(String fileName, String content) throws IOException {
 		fileName = processSpecialCases(fileName);
 		FileUtils.writeStringToFile(new File(LOCAL_DIR + fileName), content);
-	}
-	
-	public void saveWantlist(Wantlist wantlist) throws IOException {
-		String json = new Gson().toJson(wantlist);
-		save("wantlist.json", json);
 	}
 	
 	public void exportWantlist(Wantlist wantlist) throws IOException {
