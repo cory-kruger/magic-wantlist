@@ -25,7 +25,7 @@ public class MainController implements EventHandler {
 		
 		if (source.equals(view.getUpdateSetsButton())) {
 			try {
-				new SetsUpdater().update();
+				new SetsUpdater().updateSetCodes();
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 				throw new RuntimeException(e);
