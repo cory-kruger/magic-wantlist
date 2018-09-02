@@ -1,7 +1,5 @@
 package ca.corykruger.magic.magic_wantlist.wantlist;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,18 +12,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Set {
 	
 	private String name;
-	private LocalDate releaseDate;
+	private String releaseDate;
 	private List<Card> cards;
-	
-	public Set(String name, LocalDate releaseDate) {
-		this.name = name;
-		this.releaseDate = releaseDate;
-		this.cards = new ArrayList<Card>();
-	}
 	
 	public Set(String name, String releaseDate) {
 		this.name = name;
-		this.releaseDate = LocalDate.parse(releaseDate, DateTimeFormatter.ISO_DATE);
+		this.releaseDate = releaseDate;
 		this.cards = new ArrayList<Card>();
 	}
 	
@@ -67,11 +59,11 @@ public class Set {
 		this.name = name;
 	}
 
-	public LocalDate getReleaseDate() {
+	public String getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(LocalDate releaseDate) {
+	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
