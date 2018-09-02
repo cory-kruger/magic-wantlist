@@ -1,14 +1,13 @@
 package ca.corykruger.magic.magic_wantlist.gui.main;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import ca.corykruger.magic.magic_wantlist.io.FileProcessor;
+import ca.corykruger.magic.magic_wantlist.gui.set_selector.SetSelectorController;
+import ca.corykruger.magic.magic_wantlist.io.WantlistExporter;
+import ca.corykruger.magic.magic_wantlist.mtgjson.SetsUpdater;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainController implements EventHandler {
@@ -25,38 +24,30 @@ public class MainController implements EventHandler {
 		final Object source = event.getSource();
 		
 		if (source.equals(view.getUpdateSetsButton())) {
-			System.out.println("Update Sets button was pressed");
-			FileProcessor fileProcessor = new FileProcessor();
 			try {
-				fileProcessor.fetch(FileProcessor.SET_CODES, true);
+				new SetsUpdater().update();
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 				throw new RuntimeException(e);
-			}
-			String setCodesFile;
-			try {
-				setCodesFile = fileProcessor.load(FileProcessor.SET_CODES);
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				throw new RuntimeException(e);
-			}
-			List<String> setCodes = new Gson().fromJson(setCodesFile, new TypeToken<List<String>>() {}.getType());
-			for (String setCode : setCodes) {
-				try {
-					fileProcessor.fetch(setCode, false);
-				} catch (IOException e) {
-					System.out.println(e.getMessage());
-					throw new RuntimeException(e);
-				}
 			}
 		} else if (source.equals(view.getUpdateWantlistButton())) {
-			System.out.println("Wantlist update button activated");
+			final SetSelectorController setSelectorController = new SetSelectorController(primaryStage);
+			final Scene scene = new Scene(setSelectorController.getView());
+			primaryStage.setScene(scene);
 		} else if (source.equals(view.getExportWantlistButton())) {
+			try {
+				new WantlistExporter().export();
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+				throw new RuntimeException(e);
+			}
 			System.out.println("Export button activated");
 		} if (source.equals(view.getExitButton())) {
 			primaryStage.close();
 		}
 	}
+
+	
 	
 	public Stage getPrimaryStage() {
 		return primaryStage;

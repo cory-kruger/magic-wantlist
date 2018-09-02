@@ -20,7 +20,7 @@ public class MainApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// TODO:  https://stackoverflow.com/a/41308995/3670821
 		final Scene scene = new Scene(new MainController(primaryStage).getView());
-		primaryStage.setScene(scene);;
+		primaryStage.setScene(scene);
 		primaryStage.show();
 		
 //		GridPane pane = new GridPane();
