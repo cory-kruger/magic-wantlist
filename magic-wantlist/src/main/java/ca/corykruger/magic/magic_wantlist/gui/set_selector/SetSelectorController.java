@@ -1,6 +1,7 @@
 package ca.corykruger.magic.magic_wantlist.gui.set_selector;
 
 import ca.corykruger.magic.magic_wantlist.gui.main.MainController;
+import ca.corykruger.magic.magic_wantlist.gui.set_editor.SetEditorController;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -33,8 +34,9 @@ public class SetSelectorController implements EventHandler {
 			primaryStage.setScene(scene);
 		} else if (source.equals(view.getEditButton())) {
 			String selectedSet = view.getSetCodeList().getSelectionModel().getSelectedItem();
-			System.out.println("Edit Set Wantlist Selected");
-			System.out.println(selectedSet);
+			final SetEditorController setEditorController = new SetEditorController(primaryStage, selectedSet);
+			final Scene scene = new Scene(setEditorController.getView());
+			primaryStage.setScene(scene);
 		}
 	}
 

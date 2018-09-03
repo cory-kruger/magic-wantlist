@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ca.corykruger.magic.magic_wantlist.wantlist.Card;
-import ca.corykruger.magic.magic_wantlist.wantlist.Set;
 import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
 
 public class FileProcessor {
@@ -46,14 +45,8 @@ public class FileProcessor {
 		String start = "<html><head><title>Magic:  The Gathering Card Wantlist</title></head><body>";
 		String date = "<div><p>Last Updated:  " + formatter.format(wantlist.getUpdated()) + "</p></div><br />";
 		String content = "<div><ul>";
-		for (Set set : wantlist.getWantedCards()) {
-			content += "<li>" + set.getName() + "<ul>";
-			for (Card card : set.getCards()) {
-				if (card.isWanted()) {
-					content += "<li>" + card.toString() + "</li>";
-				}
-			}
-			content += "</ul></li>";
+		for (Card card : wantlist.getWantedCards()) {
+			content += "<li>" + card.toString() + "</li>";
 		}
 		content += "</ul></div>";
 		String end = "</body></html>";

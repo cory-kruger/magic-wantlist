@@ -2,20 +2,22 @@ package ca.corykruger.magic.magic_wantlist.wantlist;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Wantlist {
 	
 	private Instant updated;
-	private List<Set> sets;
+	private HashSet<Card> cards;
 	
 	public Wantlist() {
 		updated = Instant.now();
-		sets = new ArrayList<Set>();
+		cards = new HashSet<Card>();
 	}
 	
 	@Override
@@ -45,18 +47,35 @@ public class Wantlist {
 		return updated;
 	}
 	
-	public List<Set> getWantedCards() {
-		return ListUtils.unmodifiableList(sets);
+	public HashSet<Card> getWantedCards() {
+		return (HashSet<Card>) SetUtils.unmodifiableSet(cards);
 	}
 	
-	public void addSet(Set set) {
-		sets.add(set);
+	public void addCard(Card card) {
+		cards.add(card);
 		updated = Instant.now();
 	}
 	
-	public void removeSet(Set set) {
-		sets.remove(set);
+	public void addAllCards(Collection<Card> cards) {
+		this.cards.addAll(cards);
 		updated = Instant.now();
+	}
+	
+	public void removeCard(Card card) {
+		cards.remove(card);
+		updated = Instant.now();
+	}
+	
+	public List<Card> getCardsInSet(String set) {
+		List<Card> matchedCards = new ArrayList<Card>();
+		
+		for (Card card : cards) {
+			if (card.getSet().equals(set)) {
+				matchedCards.add(card);
+			}
+		}
+		
+		return matchedCards;
 	}
 
 }

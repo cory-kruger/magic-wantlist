@@ -22,6 +22,7 @@ public class SetSelectorView extends HBox {
 		try {
 			List<String> setCodes = new Gson().fromJson(fileProcessor.load(FileProcessor.SET_CODES), new TypeToken<List<String>>() {}.getType());
 			lstSets.getItems().addAll(setCodes);
+			lstSets.getSelectionModel().select(0);
 		} catch (JsonSyntaxException | IOException e) {
 			throw new RuntimeException(e);
 		}
