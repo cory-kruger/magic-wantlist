@@ -21,20 +21,20 @@ public class SetEditorView extends HBox {
 	
 	private final Button btnBack = new Button("Back");
 	private final Button btnSave = new Button("Save");
-	private final Button btnOneLeft = new Button("<");
-	private final Button btnAllLeft = new Button("<<");
-	private final Button btnOneRight = new Button(">");
-	private final Button btnAllRight = new Button(">>");
+	private final Button btnRemoveOne = new Button("<");
+	private final Button btnRemoveAll = new Button("<<");
+	private final Button btnAddOne = new Button(">");
+	private final Button btnAddAll = new Button(">>");
 	private final ListView<Card> lstAllCards = new ListView<Card>();
 	private final ListView<Card> lstWantedCards = new ListView<Card>();
 	
 	public SetEditorView(final SetEditorController setEditorController, String setCode) {
 		btnBack.setOnAction(setEditorController);
 		btnSave.setOnAction(setEditorController);
-		btnOneLeft.setOnAction(setEditorController);
-		btnAllLeft.setOnAction(setEditorController);
-		btnOneRight.setOnAction(setEditorController);
-		btnAllRight.setOnAction(setEditorController);
+		btnRemoveOne.setOnAction(setEditorController);
+		btnRemoveAll.setOnAction(setEditorController);
+		btnAddOne.setOnAction(setEditorController);
+		btnAddAll.setOnAction(setEditorController);
 		
 		FileProcessor fileProcessor = new FileProcessor();
 		Gson gson = new Gson();
@@ -62,7 +62,7 @@ public class SetEditorView extends HBox {
 		}
 		
 		
-		this.getChildren().addAll(btnBack, btnSave, btnOneLeft, btnAllLeft, btnOneRight, btnAllRight, lstAllCards, lstWantedCards);
+		this.getChildren().addAll(btnBack, btnSave, btnRemoveOne, btnRemoveAll, btnAddOne, btnAddAll, lstAllCards, lstWantedCards);
 	}
 	
 	public Button getBackButton() {
@@ -73,20 +73,20 @@ public class SetEditorView extends HBox {
 		return btnSave;
 	}
 	
-	public Button getOneLeftButton() {
-		return btnOneLeft;
+	public Button getRemoveOneButton() {
+		return btnRemoveOne;
 	}
 	
-	public Button getAllLeftButton() {
-		return btnAllLeft;
+	public Button getRemoveAllButton() {
+		return btnRemoveAll;
 	}
 	
-	public Button getOneRightButton() {
-		return btnOneRight;
+	public Button getAddOneButton() {
+		return btnAddOne;
 	}
 	
-	public Button getAllRightButton() {
-		return btnAllRight;
+	public Button getAddAllButton() {
+		return btnAddAll;
 	}
 	
 	public ListView<Card> getAllCardsList() {
