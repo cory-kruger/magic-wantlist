@@ -54,9 +54,6 @@ public class SetEditorController implements EventHandler {
 				} catch (FileNotFoundException fnfe) {
 					wantlist = new Wantlist();
 				}
-				for (Card card : wantedCards) {
-					card.setWanted(true);
-				}
 				wantlist.addAllCards(wantedCards);
 				List<Card> setCards = view.getAllCardsList().getItems();
 				wantlist.removeAllCards(setCards);
