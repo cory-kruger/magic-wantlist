@@ -15,10 +15,10 @@ public class WantlistExporter {
 		// TODO:  Exception if file !exists
 		Wantlist wantlist;
 		try {
-			wantlist = gson.fromJson(fileProcessor.load("wantlist"), Wantlist.class);
+			wantlist = gson.fromJson(fileProcessor.load(FileProcessor.WANTLIST, FileProcessor.JSON), Wantlist.class);
 		} catch (FileNotFoundException fnfe) {
 			wantlist = new Wantlist();
-			fileProcessor.save("wantlist.json", gson.toJson(wantlist));
+			fileProcessor.save(FileProcessor.WANTLIST, FileProcessor.JSON, gson.toJson(wantlist));
 		}
 		fileProcessor.exportWantlist(wantlist);
 	}

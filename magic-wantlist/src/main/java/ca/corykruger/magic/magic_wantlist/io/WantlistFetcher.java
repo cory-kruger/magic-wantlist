@@ -24,7 +24,7 @@ public class WantlistFetcher {
 	
 	public Wantlist fetch() throws IOException {
 		try {
-			String fileContents = fileProcessor.load(FileProcessor.WANTLIST);
+			String fileContents = fileProcessor.load(FileProcessor.WANTLIST, FileProcessor.JSON);
 			return gson.fromJson(fileContents, Wantlist.class);
 		} catch (FileNotFoundException fnfe) {
 			return new Wantlist();

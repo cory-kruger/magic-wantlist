@@ -20,7 +20,7 @@ public class SetSelectorView extends HBox {
 	public SetSelectorView(final SetSelectorController setSelectorController) {
 		FileProcessor fileProcessor = new FileProcessor();
 		try {
-			List<String> setCodes = new Gson().fromJson(fileProcessor.load(FileProcessor.SET_CODES), new TypeToken<List<String>>() {}.getType());
+			List<String> setCodes = new Gson().fromJson(fileProcessor.load(FileProcessor.SET_CODES, FileProcessor.JSON), new TypeToken<List<String>>() {}.getType());
 			lstSets.getItems().addAll(setCodes);
 			lstSets.getSelectionModel().select(0);
 		} catch (JsonSyntaxException | IOException e) {

@@ -1,6 +1,7 @@
 package ca.corykruger.magic.magic_wantlist.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,14 +18,15 @@ import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
 
 public class FileProcessor {
 	public static final String SET_CODES = "SetCodes";
+	public static final String SET_LIST = "SetList";
+	public static final String JSON = ".json";
 	public static final String WANTLIST = "wantlist";
 	
 	private final String LOCAL_DIR = "C:\\Users\\Admin\\Desktop\\Wantlist\\";
 	private final String MTG_JSON = "https://mtgjson.com/json/";
-	private final String JSON = ".json";
 	private final String CONFLUX = "CON";
 	
-	public void fetch(String filename, boolean overwrite, String extension) throws IOException {
+	public void fetch(String filename, String extension, boolean overwrite) throws IOException {
 		filename = processSpecialCases(filename);
 		File file = new File(LOCAL_DIR + filename + extension);
 		if (!(file.exists() && !overwrite)) {
@@ -37,18 +39,19 @@ public class FileProcessor {
 		}
 	}
 	
-	public void fetch(String fileName, boolean overwrite) throws IOException {
-		fetch(fileName, overwrite, JSON);
+	public String load(String filename, String extension) throws IOException {
+		filename = processSpecialCases(filename);
+		File file = new File(LOCAL_DIR + filename + extension);
+		try {
+			return FileUtils.readFileToString(file);
+		} catch (FileNotFoundException fnfe) {
+			return StringUtils.EMPTY;
+		}
 	}
 	
-	public String load(String file) throws IOException {
-		file = processSpecialCases(file);
-		return FileUtils.readFileToString(new File(LOCAL_DIR + file + JSON));
-	}
-	
-	public void save(String fileName, String content) throws IOException {
-		fileName = processSpecialCases(fileName);
-		FileUtils.writeStringToFile(new File(LOCAL_DIR + fileName), content);
+	public void save(String filename, String content, String extension) throws IOException {
+		filename = processSpecialCases(filename);
+		FileUtils.writeStringToFile(new File(LOCAL_DIR + filename + extension), content);
 	}
 	
 	public void exportWantlist(Wantlist wantlist) throws IOException {
@@ -61,7 +64,7 @@ public class FileProcessor {
 		}
 		content += "</ul></div>";
 		String end = "</body></html>";
-		save("wantlist.html", start + date + content + end);
+		save(WANTLIST, "html", start + date + content + end);
 	}
 	
 	String processSpecialCases(String file) {

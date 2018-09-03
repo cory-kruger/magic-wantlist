@@ -66,7 +66,7 @@ public class SetEditorController implements EventHandler {
 			Wantlist wantlist = new WantlistFetcher().fetch();
 			wantlist.addAllCards(view.getWantedCardsList().getItems());
 			wantlist.removeAllCards(view.getAllCardsList().getItems());
-			fileProcessor.save("wantlist.json", gson.toJson(wantlist));
+			fileProcessor.save(FileProcessor.WANTLIST, FileProcessor.JSON, gson.toJson(wantlist));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

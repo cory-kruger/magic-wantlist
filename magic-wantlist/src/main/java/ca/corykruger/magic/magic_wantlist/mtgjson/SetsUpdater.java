@@ -9,21 +9,31 @@ import com.google.gson.reflect.TypeToken;
 import ca.corykruger.magic.magic_wantlist.io.FileProcessor;
 
 public class SetsUpdater {
+	
+	private FileProcessor fileProcessor;
+	private Gson gson;
+	
+	public SetsUpdater() {
+		fileProcessor = new FileProcessor();
+		gson = new Gson();
+	}
+	
+	public SetsUpdater(FileProcessor fileProcessor, Gson gson) {
+		this.fileProcessor = fileProcessor;
+		this.gson = gson;
+	}
 
 	public void updateSetCodes() throws IOException {
-		System.out.println("Update Sets button was pressed");
-		FileProcessor fileProcessor = new FileProcessor();
-		fileProcessor.fetch(FileProcessor.SET_CODES, true);
-		String setCodesFile = fileProcessor.load(FileProcessor.SET_CODES);
-		List<String> setCodes = new Gson().fromJson(setCodesFile, new TypeToken<List<String>>() {}.getType());
+		// TODO:  Add loading indicator
+		fileProcessor.fetch(FileProcessor.SET_CODES, FileProcessor.JSON, true);
+		String setCodesFile = fileProcessor.load(FileProcessor.SET_CODES, FileProcessor.JSON);
+		List<String> setCodes = gson.fromJson(setCodesFile, new TypeToken<List<String>>() {}.getType());
 		for (String setCode : setCodes) {
-			fileProcessor.fetch(setCode, false);
+			fileProcessor.fetch(setCode, FileProcessor.JSON, false);
 		}
-		System.out.println("Set Update Complete");
 	}
 	
 	public void updateSetList() throws IOException {
-		FileProcessor fileProcessor = new FileProcessor();
-		fileProcessor.fetch("SetList", true);
+		fileProcessor.fetch(FileProcessor.SET_LIST, FileProcessor.JSON, true);
 	}
 }

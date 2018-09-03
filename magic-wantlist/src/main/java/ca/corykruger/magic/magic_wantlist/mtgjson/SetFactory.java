@@ -13,7 +13,7 @@ public class SetFactory {
 	public Set getSet(String setCode) throws IOException {
 		FileProcessor fileProcessor = new FileProcessor();
 		Gson gson = new Gson();
-		String setFile = fileProcessor.load(setCode);
+		String setFile = fileProcessor.load(setCode, FileProcessor.JSON);
 		Set set = gson.fromJson(setFile, Set.class);
 		for (Card card : set.getCards()) {
 			card.setSet(setCode);
