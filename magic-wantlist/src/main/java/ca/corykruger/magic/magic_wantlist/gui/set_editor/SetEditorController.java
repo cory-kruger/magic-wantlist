@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import ca.corykruger.magic.magic_wantlist.gui.set_selector.SetSelectorController;
 import ca.corykruger.magic.magic_wantlist.io.FileProcessor;
+import ca.corykruger.magic.magic_wantlist.io.WantlistFetcher;
 import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -62,7 +63,7 @@ public class SetEditorController implements EventHandler {
 
 	void saveSet() {
 		try {
-			Wantlist wantlist = gson.fromJson(fileProcessor.load("wantlist"), Wantlist.class);
+			Wantlist wantlist = new WantlistFetcher().fetch();
 			wantlist.addAllCards(view.getWantedCardsList().getItems());
 			wantlist.removeAllCards(view.getAllCardsList().getItems());
 			fileProcessor.save("wantlist.json", gson.toJson(wantlist));

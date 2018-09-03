@@ -1,13 +1,10 @@
 package ca.corykruger.magic.magic_wantlist.gui.set_editor;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-
-import ca.corykruger.magic.magic_wantlist.io.FileProcessor;
+import ca.corykruger.magic.magic_wantlist.io.WantlistFetcher;
 import ca.corykruger.magic.magic_wantlist.mtgjson.SetFactory;
 import ca.corykruger.magic.magic_wantlist.wantlist.Card;
 import ca.corykruger.magic.magic_wantlist.wantlist.CardNumberComparator;
@@ -36,19 +33,11 @@ public class SetEditorView extends HBox {
 		btnAddOne.setOnAction(setEditorController);
 		btnAddAll.setOnAction(setEditorController);
 		
-		FileProcessor fileProcessor = new FileProcessor();
-		Gson gson = new Gson();
 		try {
 			Set set = new SetFactory().getSet(setCode);
 			List<Card> setCards = new ArrayList<Card>(set.getCards());
 			
-			Wantlist wantlist;
-			try {
-				String wantlistFile = fileProcessor.load("wantlist");
-				wantlist = gson.fromJson(wantlistFile, Wantlist.class);
-			} catch (FileNotFoundException fnfe) {
-				wantlist = new Wantlist();
-			}
+			Wantlist wantlist = new WantlistFetcher().fetch();
 			List<Card> wantedCards = wantlist.getCardsInSet(set.getCode());
 			setCards.removeAll(wantedCards);
 			

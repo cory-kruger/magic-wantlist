@@ -17,22 +17,33 @@ import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
 
 public class FileProcessor {
 	public static final String SET_CODES = "SetCodes";
+	public static final String WANTLIST = "wantlist";
 	
 	private final String LOCAL_DIR = "C:\\Users\\Admin\\Desktop\\Wantlist\\";
 	private final String MTG_JSON = "https://mtgjson.com/json/";
+	private final String JSON = ".json";
 	private final String CONFLUX = "CON";
 	
-	public void fetch(String fileName, boolean overwrite) throws MalformedURLException, IOException {
-		fileName = processSpecialCases(fileName);
-		File file = new File(LOCAL_DIR + fileName + ".json");
+	public void fetch(String filename, boolean overwrite, String extension) throws IOException {
+		filename = processSpecialCases(filename);
+		File file = new File(LOCAL_DIR + filename + extension);
 		if (!(file.exists() && !overwrite)) {
-			FileUtils.copyURLToFile(new URL(MTG_JSON + fileName + ".json"), file);
+			try {
+				URL mtgjson = new URL(MTG_JSON + filename + extension);
+				FileUtils.copyURLToFile(mtgjson, file);
+			} catch (MalformedURLException e) {
+				throw new IOException(e);
+			}
 		}
+	}
+	
+	public void fetch(String fileName, boolean overwrite) throws IOException {
+		fetch(fileName, overwrite, JSON);
 	}
 	
 	public String load(String file) throws IOException {
 		file = processSpecialCases(file);
-		return FileUtils.readFileToString(new File(LOCAL_DIR + file + ".json"));
+		return FileUtils.readFileToString(new File(LOCAL_DIR + file + JSON));
 	}
 	
 	public void save(String fileName, String content) throws IOException {
