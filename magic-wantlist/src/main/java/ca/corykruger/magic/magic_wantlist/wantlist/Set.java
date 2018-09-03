@@ -12,11 +12,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Set {
 	
 	private String name;
+	private String code;
 	private String releaseDate;
 	private List<Card> cards;
 	
-	public Set(String name, String releaseDate) {
+	public Set(String name, String code, String releaseDate) {
 		this.name = name;
+		this.code = code;
 		this.releaseDate = releaseDate;
 		this.cards = new ArrayList<Card>();
 	}
@@ -30,6 +32,7 @@ public class Set {
 		if (obj instanceof Set) {
 			Set aSet = (Set) obj;
 			if (StringUtils.equals(name, aSet.getName())
+					&& StringUtils.equals(code, aSet.getCode())
 					&& Objects.equals(releaseDate, aSet.getReleaseDate())) {
 				return true;
 			}
@@ -42,6 +45,7 @@ public class Set {
 	public int hashCode() {
 		return new HashCodeBuilder(181, 113)
 				.append(name)
+				.append(code)
 				.append(releaseDate)
 				.toHashCode();
 	}
@@ -57,6 +61,14 @@ public class Set {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getReleaseDate() {

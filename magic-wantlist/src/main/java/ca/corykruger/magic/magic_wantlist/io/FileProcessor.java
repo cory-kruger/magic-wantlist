@@ -1,6 +1,7 @@
 package ca.corykruger.magic.magic_wantlist.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,32 +14,44 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import ca.corykruger.magic.magic_wantlist.wantlist.Card;
-import ca.corykruger.magic.magic_wantlist.wantlist.Set;
 import ca.corykruger.magic.magic_wantlist.wantlist.Wantlist;
 
 public class FileProcessor {
 	public static final String SET_CODES = "SetCodes";
+	public static final String SET_LIST = "SetList";
+	public static final String JSON = ".json";
+	public static final String WANTLIST = "wantlist";
 	
 	private final String LOCAL_DIR = "C:\\Users\\Admin\\Desktop\\Wantlist\\";
 	private final String MTG_JSON = "https://mtgjson.com/json/";
 	private final String CONFLUX = "CON";
 	
-	public void fetch(String fileName, boolean overwrite) throws MalformedURLException, IOException {
-		fileName = processSpecialCases(fileName);
-		File file = new File(LOCAL_DIR + fileName + ".json");
+	public void fetch(String filename, String extension, boolean overwrite) throws IOException {
+		filename = processSpecialCases(filename);
+		File file = new File(LOCAL_DIR + filename + extension);
 		if (!(file.exists() && !overwrite)) {
-			FileUtils.copyURLToFile(new URL(MTG_JSON + fileName + ".json"), file);
+			try {
+				URL mtgjson = new URL(MTG_JSON + filename + extension);
+				FileUtils.copyURLToFile(mtgjson, file);
+			} catch (MalformedURLException e) {
+				throw new IOException(e);
+			}
 		}
 	}
 	
-	public String load(String file) throws IOException {
-		file = processSpecialCases(file);
-		return FileUtils.readFileToString(new File(LOCAL_DIR + file + ".json"));
+	public String load(String filename, String extension) throws IOException {
+		filename = processSpecialCases(filename);
+		File file = new File(LOCAL_DIR + filename + extension);
+		try {
+			return FileUtils.readFileToString(file);
+		} catch (FileNotFoundException fnfe) {
+			return StringUtils.EMPTY;
+		}
 	}
 	
-	public void save(String fileName, String content) throws IOException {
-		fileName = processSpecialCases(fileName);
-		FileUtils.writeStringToFile(new File(LOCAL_DIR + fileName), content);
+	public void save(String filename, String content, String extension) throws IOException {
+		filename = processSpecialCases(filename);
+		FileUtils.writeStringToFile(new File(LOCAL_DIR + filename + extension), content);
 	}
 	
 	public void exportWantlist(Wantlist wantlist) throws IOException {
@@ -46,18 +59,12 @@ public class FileProcessor {
 		String start = "<html><head><title>Magic:  The Gathering Card Wantlist</title></head><body>";
 		String date = "<div><p>Last Updated:  " + formatter.format(wantlist.getUpdated()) + "</p></div><br />";
 		String content = "<div><ul>";
-		for (Set set : wantlist.getWantedCards()) {
-			content += "<li>" + set.getName() + "<ul>";
-			for (Card card : set.getCards()) {
-				if (card.isWanted()) {
-					content += "<li>" + card.toString() + "</li>";
-				}
-			}
-			content += "</ul></li>";
+		for (Card card : wantlist.getWantedCards()) {
+			content += "<li>" + card.toString() + "</li>";
 		}
 		content += "</ul></div>";
 		String end = "</body></html>";
-		save("wantlist.html", start + date + content + end);
+		save(WANTLIST, "html", start + date + content + end);
 	}
 	
 	String processSpecialCases(String file) {
