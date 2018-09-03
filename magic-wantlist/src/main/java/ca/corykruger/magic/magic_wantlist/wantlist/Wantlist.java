@@ -66,6 +66,11 @@ public class Wantlist {
 		updated = Instant.now();
 	}
 	
+	public void removeAllCards(List<Card> cards) {
+		this.cards.removeAll(cards);
+		updated = Instant.now();
+	}
+	
 	public List<Card> getCardsInSet(String set) {
 		List<Card> matchedCards = new ArrayList<Card>();
 		
@@ -77,5 +82,7 @@ public class Wantlist {
 		
 		return matchedCards;
 	}
+
+	
 
 }

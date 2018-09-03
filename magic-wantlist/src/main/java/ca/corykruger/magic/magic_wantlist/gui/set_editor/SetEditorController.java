@@ -50,7 +50,7 @@ public class SetEditorController implements EventHandler {
 				Gson gson = new Gson();
 				Wantlist wantlist;
 				try {
-				wantlist = gson.fromJson(fileProcessor.load("wantlist"), Wantlist.class);
+					wantlist = gson.fromJson(fileProcessor.load("wantlist"), Wantlist.class);
 				} catch (FileNotFoundException fnfe) {
 					wantlist = new Wantlist();
 				}
@@ -58,14 +58,27 @@ public class SetEditorController implements EventHandler {
 					card.setWanted(true);
 				}
 				wantlist.addAllCards(wantedCards);
+				List<Card> setCards = view.getAllCardsList().getItems();
+				wantlist.removeAllCards(setCards);
 				fileProcessor.save("wantlist.json", new Gson().toJson(wantlist));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		} else if (source.equals(view.getOneLeftButton())) {
-			
+			ListView<Card> lstAllCards = view.getAllCardsList();
+			ListView<Card> lstWantedCards = view.getWantedCardsList();
+			Card selectedCard = lstWantedCards.getSelectionModel().getSelectedItem();
+			lstWantedCards.getItems().remove(selectedCard);
+			lstAllCards.getItems().add(selectedCard);
+			lstAllCards.refresh();
+			lstWantedCards.refresh();
 		} else if (source.equals(view.getAllLeftButton())) {
-			
+			ListView<Card> lstAllCards = view.getAllCardsList();
+			ListView<Card> lstWantedCards = view.getWantedCardsList();
+			lstAllCards.getItems().addAll(lstWantedCards.getItems());
+			lstWantedCards.getItems().clear();
+			lstWantedCards.refresh();
+			lstAllCards.refresh();
 		} else if (source.equals(view.getOneRightButton())) {
 			ListView<Card> lstAllCards = view.getAllCardsList();
 			ListView<Card> lstWantedCards = view.getWantedCardsList();
@@ -75,7 +88,12 @@ public class SetEditorController implements EventHandler {
 			lstAllCards.refresh();
 			lstWantedCards.refresh();
 		} else if (source.equals(view.getAllRightButton())) {
-			
+			ListView<Card> lstAllCards = view.getAllCardsList();
+			ListView<Card> lstWantedCards = view.getWantedCardsList();
+			lstWantedCards.getItems().addAll(lstAllCards.getItems());
+			lstAllCards.getItems().clear();
+			lstWantedCards.refresh();
+			lstAllCards.refresh();
 		}
 	}
 }
